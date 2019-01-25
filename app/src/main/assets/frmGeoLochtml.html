@@ -1,0 +1,128 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo Location</title>
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+    <div class="app app__layout">
+        <header>
+            <span class="header__icon">
+                <svg class="menu__icon no--select" width="24px" height="24px" viewBox="0 0 48 48" fill="#fff">
+                    <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z"></path>
+                </svg>
+            </span>
+
+            <span class="header__title no--select">Geo Location</span>
+        </header>
+
+        <div class="menu">
+            <div class="menu__header"></div>
+            <ul class="menu__list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="latest.html">Latest</a></li>
+                <li><a href="frmUpload.html">Upload</a></li>
+                <li><a href="frmGeoLochtml.html">Geo location</a></li>
+                <li><a href="index_RegForm.html">Registration</a></li>
+            </ul>
+        </div>
+
+        <div class="menu__overlay"></div>
+
+        <div class="app__content">
+
+            <!--<section class="section">
+                <h3> Stay Up to Date with R-I-L </h3>
+                <img class="profile-pic" src="./images/books.png" alt="Hello, World!">
+
+                <p class="home-note">Latest Commits on Resources I like!</a></p>
+            </section>
+
+
+            <div class="fab fab__push">
+                <div class="fab__ripple"></div>
+                <img class="fab__image" src="./images/push-off.png" alt="Push Notification" />
+            </div>-->
+
+
+            <p>Click the button to get your coordinates.</p>
+
+            <button onclick="getLocation()">Current Geo Location</button>
+
+            <p id="demo"></p>
+            <!-- Toast msg's  -->
+            <div class="toast__container"></div>
+        </div>
+    </div>
+
+    <script>
+var x = document.getElementById("demo");
+var lat, lont;
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else {
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "<br><br>Latitude: " + position.coords.latitude +
+  "<br>Longitude: " + position.coords.longitude;
+  lat = position.coords.latitude;
+  lont = position.coords.longitude;
+  addItem();
+} 
+
+var db;
+
+var openRequest = indexedDB.open('KCS_db',1);
+
+openRequest.onupgradeneeded = function (e) {
+    var db = e.target.result;
+    console.log('running onupgradeneeded');
+    if (!db.objectStoreNames.contains('GEO_LOC')) {
+        var storeOS = db.createObjectStore('GEO_LOC',
+          { keyPath: 'name' });
+    }
+};
+openRequest.onsuccess = function (e) {
+    console.log('running onsuccess');
+    db = e.target.result;
+    addItem();
+};
+openRequest.onerror = function (e) {
+    console.log('onerror!');
+    console.dir(e);
+};
+
+function addItem() {
+    var transaction = db.transaction(['GEO_LOC'], 'readwrite');
+    var store = transaction.objectStore('GEO_LOC');
+    var item = {
+        name: lat,
+        Longitude: lont,
+        description: 'It is Latitude & Longitude',
+        created: new Date().getTime()
+    };
+
+    var request = store.add(item);
+
+    request.onerror = function (e) {
+        console.log('Error', e.target.error.name);
+    };
+    request.onsuccess = function (e) {
+        console.log('Woot! Did it');
+    };
+}
+    </script>
+
+    <script src="./js/app.js"></script>
+    <script src="./js/toast.js"></script>
+    <script src="./js/offline.js"></script>
+    <script src="./js/menu.js"></script>
+</body>
+</html>

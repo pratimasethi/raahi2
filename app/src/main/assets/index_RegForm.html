@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+</head>
+<body>
+<div class="app app__layout">
+    <header>
+            <span class="header__icon">
+                <svg class="menu__icon no--select" width="24px" height="24px" viewBox="0 0 48 48" fill="#fff">
+                    <path d="M6 36h36v-4H6v4zm0-10h36v-4H6v4zm0-14v4h36v-4H6z"></path>
+                </svg>
+            </span>
+
+        <span class="header__title no--select">PWA - Home</span>
+    </header>
+
+    <div class="menu">
+        <div class="menu__header"></div>
+        <ul class="menu__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="latest.html">Latest</a></li>
+            <li><a href="frmUpload.html">Upload</a></li>
+            <li><a href="frmGeoLochtml.html">Geo location</a></li>
+            <li><a href="index_RegForm.html">Registration</a></li>
+        </ul>
+    </div>
+
+    <div class="menu__overlay"></div>
+
+    <div class="app__content">
+
+        <!-- Top Navigation Menu -->
+        <!-- Load an icon library to show a hamburger menu (bars) on small screens -->
+        <h2 align="center">Registration Form</h2>
+        <table id="tblMain">
+            <tr>
+                <td>Name</td>
+                <td><input type="text" id='txtName' value="" required placeholder="Name"/> </td>
+            </tr>
+            <tr>
+                <td>Mobile No</td>
+                <td><input type="number" id='txtMobile' value="" placeholder="99XXX99XXX"/> </td>
+            </tr>
+            <tr>
+                <td>Email-Id</td>
+                <td><input type="email" id='txtEmail' value="" placeholder="navin@gmail.com"/> </td>
+            </tr>
+            <tr>
+                <td>Date of Birth</td>
+                <td><input type="date" id='txtDOB' value=""/> </td>
+            </tr>
+            <br>
+
+            <tr>
+                <td colspan="2" nowrap align="center">
+                    <Button id="btnCr" onClick="storeData()">Save</Button> &nbsp;
+                    <Button id="btnGetData" onClick="loadData()">View</Button>
+                </td>
+            </tr>
+
+            <tr id='trView' style='display: none'><td colspan="2"> <div id='divView'></div>
+                <table id='tblView' border='1px'>
+                    <tr style='background: lightseagreen'>
+                        <td>Name</td>
+                        <td>Mobile Numer</td>
+                        <td>Email ID</td>
+                        <td>Date of Birth</td>
+                    </tr>
+                    <tr style='background: lightslategray'>
+                        <td id='tdName'>&nbsp;</td>
+                        <td id='tdMobile'>&nbsp;</td>
+                        <td id='tdEmail'>&nbsp;</td>
+                        <td id='tdDob'>&nbsp;</td>
+                    </tr>
+                </table>
+            </td>
+            </tr>
+            <tr bgcolor="navy" style="height:5px;"><td colspan="2">&nbsp;</td></tr>
+            <tr><td colspan="2">&nbsp;</td></tr>
+            <tr>
+                <td colspan="2" nowrap align="center">
+                    <Button id="btnTakePhoto" onClick="takePhoto()">Capture Photo</Button> &nbsp;
+                    <Button id="btnTakeVideo" onClick="takeVideo()">Capture Video</Button>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+<script src="./js/app.js"></script>
+<script src="./js/toast.js"></script>
+<script src="./js/offline.js"></script>
+<script src="./js/menu.js"></script>
+</body>
+</html>
+<script type="text/javascript">
+    function fnClick()
+    {
+    alert('hello');
+    }
+    function takePhoto() {
+        alert('Start Photo Capturing...');
+        Android.takePhoto();
+    }
+     function takeVideo() {
+        alert('Start Video Capturing...');
+        Android.takeVideo();
+    }
+
+    $('#save').on('click', function(){
+       var post_vars = $('#myform').serializeArray();
+       localStorage.setItem(id, post_vars);
+    });
+
+
+    function storeData()
+    {
+
+    var name = document.getElementById('txtName').value;
+    var mobile = document.getElementById('txtMobile').value;
+    var email = document.getElementById('txtEmail').value;
+    var dob = document.getElementById('txtDOB').value;
+
+     localStorage.setItem('name',name);
+     localStorage.setItem('mobile',mobile);
+     localStorage.setItem('email',email);
+     localStorage.setItem('dob',dob);
+
+
+     alert('Details Saved Successfully');
+
+    }
+
+    function loadData()
+    {
+       
+       var name = localStorage.getItem('name');
+       var mobile = localStorage.getItem('mobile');
+       var email =localStorage.getItem('email');
+       var dob = localStorage.getItem('dob');
+
+      // alert('Name :' + name + ' ' + mobile + ' ' + email + ' ' + dob); 
+
+       document.getElementById('trView').style.display='';
+       document.getElementById('tdName').innerHTML=name;
+       document.getElementById('tdMobile').innerHTML=mobile;
+       document.getElementById('tdEmail').innerHTML=email;
+       document.getElementById('tdDob').innerHTML=dob;
+    }
+</script>
